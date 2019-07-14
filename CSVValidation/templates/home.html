@@ -1,0 +1,15 @@
+{%extends 'base.html'%}
+
+{% block content%}
+<a href="{% url 'portfolio_new' %}">+ New Blog Post</a>
+<div class="row no-gutters">
+	<div class="col-lg-3">
+	{%for portfolio in object_list%}
+		<div class="cat-title">
+			<h3><a href="{% url 'portfolio_detail' portfolio.title %}">{{portfolio.title}}</a></h3>
+		</div>
+	{%endfor%}
+	</div>
+	
+
+{%endblock content%}
