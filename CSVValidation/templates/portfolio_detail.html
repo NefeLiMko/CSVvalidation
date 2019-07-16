@@ -2,13 +2,53 @@
 
 {%block content%}
 	<div class="row no-gutters">
-		<div class="col-lg-3">
+		<div class="col-lg-2">
 			<a href="">{{portfolio.title}}</a>
 		</div>
-		<div class="col-lg-3">
-			<a href="">{{portfolio.file}}</a>
+		<div class="col-lg-2">
+			<a href="">{{portfolio.filename}}</a>
+		</div>
+		<div class="col-lg-1">
+			<a href="">{{portfolio.file_stored}}</a>
 		</div>
 
 	</div>
+	<div class="row no-gutters">
+		{%for item in header%}
+			<div class="col">
+				<p>{{item}}</p>
+				
+			</div>
+		{%endfor%}	
+
+	</div>
+	{%for el in data%}
+	<div class="row no-gutters" style="border-bottom:1px solid black;">
+		<div class="col"><p>{{portfolio.filename}}</p></div>
+		<div class="col"><p>{{el.user}}</p></div>			
+		<div class="col"><p>{{el.date}}</p></div>	
+		<div class="col"><p>{{el.accountid}}</p></div>
+		<div class="col"><p>{{el.date_opened}}</p></div>
+		<div class="col"><p>{{el.external_name}}</p></div>
+		{%for key,value in el.others.items%}
+		<div class="col"><p>{{value}}</p></div>
+		{%endfor%}
+	</div>
+	
+	{%endfor%}
+	<div class="row no-gutters">
+	
+		<div class="col-lg-2">
+			<p>Accs</p>
+			{%for acs in portfolio.accountid%} <p> {{acs }}</p>{%endfor%}</div>
+	
+		<div class="col-lg-2">
+			<p>date</p>
+			{%for dat in portfolio.date_opened%} <p> {{ dat}}</p>{%endfor%}</div>
+		<div class="col-lg-2">
+			<p>ext_name</p>
+		 {%for ext in portfolio.external_name%} <p> {{ ext }}</p>{%endfor%}</div>
+</div>
+
 
 {%endblock content%}
