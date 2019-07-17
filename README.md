@@ -7,6 +7,7 @@ Django chat
     Python 3.6.7
     celery==4.3.0
     Django==2.2.3
+    psycopg2
     rabbitmq-server
     postgresql
 
