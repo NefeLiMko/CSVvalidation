@@ -28,7 +28,7 @@ SECRET_KEY = 'p^xccx+0zu=dxn3hp&n^fu(7fs)%0bwt_538p3_#df!*32!yxf'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+CELERY_BROKER_URL = 'amqp://localhost'
 
 # Application definition
 

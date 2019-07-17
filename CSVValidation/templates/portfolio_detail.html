@@ -1,6 +1,10 @@
 {%extends 'base.html' %}
 
 {%block content%}
+<h1><a href="{% url 'port:portfolio_delete' portfolio.pk %}">delete</a></h1>
+<h1><a href="{% url 'port:portfolio_edit' portfolio.pk %}">edit</a></h1>
+<h1>{{portfolio.file}}</h1>
+
 	<div class="row no-gutters">
 		<div class="col-lg-2">
 			<a href="">{{portfolio.title}}</a>
@@ -14,6 +18,9 @@
 
 	</div>
 	<div class="row no-gutters">
+		<div class="col">
+			<p>Status</p>
+		</div>
 		{%for item in header%}
 			<div class="col">
 				<p>{{item}}</p>
@@ -24,14 +31,15 @@
 	</div>
 	{%for el in data%}
 	<div class="row no-gutters" style="border-bottom:1px solid black;">
-		<div class="col"><p>{{portfolio.filename}}</p></div>
-		<div class="col"><p>{{el.user}}</p></div>			
-		<div class="col"><p>{{el.date}}</p></div>	
-		<div class="col"><p>{{el.accountid}}</p></div>
-		<div class="col"><p>{{el.date_opened}}</p></div>
-		<div class="col"><p>{{el.external_name}}</p></div>
+		<div class="col">{{el.status}}</div>
+		<div class="col"><p> ef{{el.filename}}</p></div>
+		<div class="col"><p>eu {{el.user}}</p></div>			
+		<div class="col"><p>ed {{el.date}}</p></div>	
+		<div class="col"><p>aid {{el.accountid}}</p></div>
+		<div class="col"><p>date {{el.date_opened}}</p></div>
+		<div class="col"><p>ex {{el.external_name}}</p></div>
 		{%for key,value in el.others.items%}
-		<div class="col"><p>{{value}}</p></div>
+		<div class="col"><p>{{key}} : {{value}}</p></div>
 		{%endfor%}
 	</div>
 	

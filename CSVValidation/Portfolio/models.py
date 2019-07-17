@@ -5,6 +5,8 @@ from .checker import ContentTypeRestrictedFileField
 # Create your models here.
 
 class Stuff(models.Model):
+	status = models.CharField(max_length=255)
+	filename = models.CharField(max_length=255)
 	user = models.CharField(max_length=255)
 	date = models.DateTimeField(auto_now=False)
 	accountid = models.IntegerField(default=0)
@@ -12,7 +14,7 @@ class Stuff(models.Model):
 	external_name = models.CharField(max_length=255)
 	others = JSONField()
 	class Meta:
-		ordering = ('user','date', 'accountid','date_opened','external_name','others')
+		ordering = ('status','filename','user','date', 'accountid','date_opened','external_name','others')
 	def __str__(self):
 					return self.external_name	
 
@@ -21,14 +23,16 @@ class Stuff(models.Model):
 
 
 class Portfolio(models.Model):
+	num = models.IntegerField(default = 0)
 	title = models.CharField(max_length=255,verbose_name="Title")
 	file  = ContentTypeRestrictedFileField(upload_to='uploads/', content_types=['text/csv', ],max_upload_size=5242880 )
-	status = models.CharField(max_length=255)
+	
 	file_stored = models.BooleanField(default=False)
 
-	filename = models.CharField(max_length=255)
-	data = models.ManyToManyField(Stuff, related_name="data",)
 	
+	data = models.ManyToManyField(Stuff, related_name="data",)
+	class Meta:
+		ordering = ('title',)
 
 	def __str__(self):
 		return self.title

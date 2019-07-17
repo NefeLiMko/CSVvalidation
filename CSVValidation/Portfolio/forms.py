@@ -1,4 +1,10 @@
 from django import forms
-from django.core.exceptions import ValidationError
-from .checker import ContentTypeRestrictedFileField
-from .models import Portfolio
+from django.core.validators import MinValueValidator, MaxValueValidator
+
+class GenerateRandomPortForm(forms.Form):
+    total = forms.IntegerField(
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(10)
+        ]
+    )
