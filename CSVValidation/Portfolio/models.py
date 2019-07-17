@@ -26,7 +26,7 @@ class Portfolio(models.Model):
 	num = models.IntegerField(default = 0)
 	title = models.CharField(max_length=255,verbose_name="Title")
 	file  = ContentTypeRestrictedFileField(upload_to='uploads/', content_types=['text/csv', ],max_upload_size=5242880 )
-	
+	validating = models.BooleanField(default = False)
 	file_stored = models.BooleanField(default=False)
 
 	
@@ -39,4 +39,4 @@ class Portfolio(models.Model):
 	def file_path(self):
 		return self.file
 	def get_absolute_url(self):
-		return reverse('port:success')
+		return reverse('port:home')

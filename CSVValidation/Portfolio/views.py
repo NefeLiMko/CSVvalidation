@@ -29,18 +29,11 @@ class PortfolioListView(ListView):
 	model = Portfolio
 	template_name = 'home.html'
 	def get(self, request: HttpRequest) -> HttpResponse:
-		try:
-			user = request.user
-			CSV_storing.delay(str(user))
-			PortList = Portfolio.objects.all()
-			return (render(request,self.template_name,{'PortList':PortList}))
+		user = request.user
+		CSV_storing.delay(str(user))
+		PortfolioList = Portfolio.objects.all()
+		return (render(request,self.template_name,{'PortList':PortfolioList}))
 
-		except ObjectDoesNotExist:
-				PortList = Portfolio.objects.all()
-				return (render(request,self.template_name,{'PortList':PortList}))
-		except FileNotFoundError:
-				PortList = Portfolio.objects.all()
-				return (render(request,self.template_name,{'PortList':PortList}))
 
 		
 
@@ -49,21 +42,19 @@ class PortfolioCreateView(CreateView):
 	template_name = 'portfolio_new.html'
 	fields = ['title','file']
 
-class Success(ListView):
-	model = Portfolio
-	template_name = 'success.html'
 
 class PortfolioUpdateView(UpdateView):
-	model =Portfolio
+	model = Portfolio
 	template_name = 'portfolio_edit.html'
-	fields =['file']	
-	reverse_lazy('port:success')
-	def post(self, request, pk: int) :
-		Port = Portfolio.objects.get(pk=pk)
-		Port.file = request.FILES.get('file')
-		Port.file_stored = False
-		Port.save()
-		return( HttpResponseRedirect('/success/'))	
+	fields = ['file']	
+	reverse_lazy('port:home')
+	def post(self, request: HttpRequest, pk: int) -> HttpResponse:
+		portfolio = Portfolio.objects.get(pk=pk)
+		portfolio.file = request.FILES.get('file')
+		portfolio.file_stored = False
+		portfolio.validating = False
+		portfolio.save()
+		return( HttpResponseRedirect('/'))	
 
 class PortfolioDeleteView(DeleteView):
 	model = Portfolio
@@ -73,25 +64,25 @@ class PortfolioDeleteView(DeleteView):
 class PortfolioDetailView(DetailView):
 	def get(self, request: HttpRequest, pk: int) -> HttpResponse:
 
-		z = Portfolio.objects.get(pk=pk)
+		portfolio = Portfolio.objects.get(pk=pk)
 		header = ['filename','user','date','accountid','date_opened','external_name',]
 		data_list =[]
-		other = []
-		oth = dict()
+		other_fields = []
 
-		for dat in z.data.all():
-			data_list.append(dat)
+		for data in portfolio.data.all():
+			data_list.append(data)
 				
 		for el in data_list:
 			if el.others!=True :
 				for key in el.others.keys():
 					if key not in header:
 						header.append(key)
-					other.append(el.others.get(key))
+					other_fields.append(el.others.get(key))
 		for el in data_list:
 			for key in header[6:]:
 				if key not in el.others.keys():
 					el.others.update({key:'none'})	
 					el.save()		
-
-		return(render(request,'portfolio_detail.html',{'portfolio':z,'data':data_list,'header':header,}))
+		Validation(portfolio)
+		messages.success(self.request, 'Validation is in progress! Wait a moment and refresh this page.')
+		return(render(request,'portfolio_detail.html',{'portfolio':portfolio,'data':data_list,'header':header,}))
